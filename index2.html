@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            vertical-align: top;
+            background: transparent;
+            -webkit-tap-highlight-color: rgba(255,255,255,0);
+            -webkit-tap-highlight-color: transparent
+        }
+        body {
+            background-color: ivory;
+            padding:10px;
+            min-width: 100vw;
+            min-height: 100vh;
+            width: 100%;
+            height: 100%;
+        }
+        #canvas {
+            border:1px solid red;
+        }
+    </style>
+</head>
+<body>
+<p>Resize the image using the 4 draggable corner anchors</p>
+<p>You can also drag the image</p>
+<canvas id="canvas" width=700 height=700></canvas>
+
+<script src="jquery-3.2.1.min.js"></script>
+<script src="common2.js"></script>
+</body>
+</html>
