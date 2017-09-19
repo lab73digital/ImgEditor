@@ -4,36 +4,56 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            vertical-align: top;
+            background: transparent;
+            -webkit-tap-highlight-color: rgba(255,255,255,0);
+            -webkit-tap-highlight-color: transparent
+        }
         * {
             box-sizing: border-box;
         }
 
         body {
+            min-width: 100vw;
+            min-height: 100vh;
             position: relative;
             background-color: ivory;
         }
 
         canvas {
             border: 1px solid red;
+            margin: 50px 50px 5px 50px;
         }
 
         .uploader {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 50px;
+            left: 50px;
             overflow: hidden;
-            width: 502px;
-            height: 502px;
+            width: 802px;
+            height: 802px;
             background: transparent;
             border: 1px dashed #e8e8e8;
         }
 
         #filePhoto {
             position: absolute;
-            width: 502px;
-            height: 502px;
-            top: 0;
-            left: 0;
+            width: 802px;
+            height: 802px;
+            top: 50px;
+            left: 50px;
             z-index: 2;
             opacity: 0;
             cursor: pointer;
@@ -41,145 +61,24 @@
     </style>
 </head>
 <body>
-<canvas id="canvas" width=500 height=500></canvas>
+<canvas id="canvas" width="800" height="800"></canvas>
 <div class="uploader" onclick="app.inputClick">
     <input type="file" name="userprofile_picture" id="filePhoto"/>
 </div>
 <br>
-<button id="clockwise">Rotate right</button>
-<button id="counterclockwise">Rotate left</button>
-<br>
-<button id="scalePlus">Scale +</button>
-<button id="scaleMinus">Scale -</button>
-<br>
-<button id="flip">flip</button>
-<br>
-<button id="drag">drag</button>
+<div style="margin-left: 50px">
+    <button id="clockwise">Rotate right</button>
+    <button id="counterclockwise">Rotate left</button>
+    <br>
+    <button id="scalePlus">Scale +</button>
+    <button id="scaleMinus">Scale -</button>
+    <br>
+    <button id="flip">flip</button>
+    <br>
+    <button id="drag">drag</button>
+</div>
 
-<script
-        src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
+<script src="jquery-3.2.1.min.js"></script>
 <script src="common.js"></script>
-<script>
-    var App = function () {
-        var self = {};
-        this._init = function () {
-            self.canvas = document.getElementById("canvas");
-            self.ctx = self.canvas.getContext("2d");
-
-            self.inputPhoto = document.getElementById('filePhoto');
-
-            self.angleInDegrees = 0;
-            self.scaleSize = 1;
-
-
-            self.image = document.createElement("img");
-
-            self.imageLoader = document.getElementById('filePhoto');
-
-            self.imageLoader.addEventListener('change', handleImage, false);
-
-            self.image.onload = function () {
-                self.ctx.drawImage(self.image, self.canvas.width / 2 - self.image.width / 2, self.canvas.height / 2 - self.image.width / 2);
-            };
-
-            self.canvasOffset = $("#canvas").offset();
-            self.offsetX = canvasOffset.left;
-            self.offsetY = canvasOffset.top;
-            self.canvasWidth = canvas.width;
-            self.canvasHeight = canvas.height;
-            self.isDragging = false;
-
-            self.image.src = "";
-
-            document.getElementById('clockwise').onclick = function () {
-                self.angleInDegrees += 90;
-                drawRotated(self.angleInDegrees);
-            };
-
-            document.getElementById('counterclockwise').onclick = function () {
-                self.angleInDegrees -= 90;
-                drawRotated(self.angleInDegrees);
-            };
-
-            document.getElementById('scalePlus').onclick = function () {
-                self.scaleSize += .1;
-                drawScaled(self.scaleSize);
-            };
-
-            document.getElementById('scaleMinus').onclick = function () {
-                self.scaleSize -= .1;
-                drawScaled(self.scaleSize);
-            };
-            $("#canvas").mousedown(function(e){handleMouseDown(e);});
-            $("#canvas").mousemove(function(e){handleMouseMove(e);});
-            $("#canvas").mouseup(function(e){handleMouseUp(e);});
-            $("#canvas").mouseout(function(e){handleMouseOut(e);});
-        };
-        this.inputClick = function () {
-            self.inputPhoto.click();
-        };
-        var drawRotated = function (degrees) {
-            self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-            self.ctx.save();
-            self.ctx.translate(self.canvas.width / 2, self.canvas.height / 2);
-            self.ctx.rotate(degrees * Math.PI / 180);
-            self.ctx.drawImage(self.image, -self.image.width / 2, -self.image.width / 2);
-            self.ctx.restore();
-        };
-        var drawScaled = function (scaleSize) {
-            self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
-            self.ctx.save();
-            self.ctx.translate(self.canvas.width / 2, self.canvas.height / 2);
-            self.ctx.scale(scaleSize, scaleSize);
-            self.ctx.drawImage(self.image, -self.image.width / 2, -self.image.width / 2);
-            self.ctx.restore();
-        };
-        var handleImage = function (e) {
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                self.image.src = event.target.result;
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        };
-
-        var handleMouseDown = function(e){
-            self.canMouseX = parseInt(e.clientX - self.offsetX);
-            self.canMouseY = parseInt(e.clientY - self.offsetY);
-            // set the drag flag
-            self.isDragging = true;
-        };
-
-        var handleMouseUp = function(e){
-            self.canMouseX = parseInt(e.clientX - self.offsetX);
-            self.canMouseY = parseInt(e.clientY - self.offsetY);
-            // clear the drag flag
-            self.isDragging = false;
-        };
-
-        var handleMouseOut = function(e){
-            self.canMouseX = parseInt(e.clientX - self.offsetX);
-            self.canMouseY = parseInt(e.clientY - self.offsetY);
-            // user has left the canvas, so clear the drag flag
-            //isDragging=false;
-        };
-
-        var handleMouseMove = function(e){
-            self.canMouseX = parseInt(e.clientX - self.offsetX);
-            self.canMouseY = parseInt(e.clientY - self.offsetY);
-            // if the drag flag is set, clear the canvas and draw the image
-            if(self.isDragging){
-                self.ctx.clearRect(0,0,self.canvasWidth,self.canvasHeight);
-                self.ctx.drawImage(self.image,self.canMouseX-128/2,self.canMouseY-120/2,128,120);
-            }
-        };
-
-    };
-    var app = new App();
-    $(function () {
-        app._init();
-    });
-</script>
 </body>
 </html>
