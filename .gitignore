@@ -3,7 +3,6 @@
 /app/css/
 /**/*.psd
 /**/Thumbs.db
-.idea/workspace.xml
 /.idea/
 /.idea/*
 .idea/workspace.xml
