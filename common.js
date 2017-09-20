@@ -217,4 +217,15 @@ var App = function () {
 var app = new App();
 $(function () {
     app._init();
+    $('#fblogin').on('click', function () {
+        FB.login(function(response) {
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                console.log(response);
+            } else {
+                // The person is not logged into this app or we are unable to tell.
+                console.log(response);
+            }
+        });
+    });
 });

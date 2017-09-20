@@ -49,6 +49,10 @@
             border: 1px dashed #e8e8e8;
         }
 
+        #imgContainer {
+            position: relative;
+        }
+
         #filePhoto {
             position: absolute;
             width: 802px;
@@ -63,6 +67,7 @@
 </head>
 <body>
 <script>
+    var responseG;
     // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {
         console.log('statusChangeCallback');
@@ -132,12 +137,25 @@
     function testAPI() {
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me', function(response) {
+            responseG = response;
             console.log('Successful login for: ' + response.name);
             document.getElementById('status').innerHTML =
                 'Thanks for logging in, ' + response.name + '!';
         });
     }
 </script>
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+
+<div id="status">
+</div>
+<button id="fblogin">fb login</button>
 <div id="imgContainer">
     <canvas id="canvas" width="800" height="800"></canvas>
     <div class="uploader" onclick="app.inputClick">
@@ -157,17 +175,6 @@
     <button id="getImg">getImg</button>
 </div>
 <br>
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
-
-<div id="status">
-</div>
 <script src="jquery-3.2.1.min.js"></script>
 <script src="common.js"></script>
 </body>
