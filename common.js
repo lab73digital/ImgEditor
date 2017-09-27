@@ -4,6 +4,7 @@ var App = function () {
         self.canvas = document.getElementById('canvas');
         self.ctx = self.canvas.getContext('2d');
         self.$canvas = $(self.canvas);
+        self.$overlay = $('.overlay');
         self.$body = $('body');
         self.inputPhoto = document.getElementById('filePhoto');
         self.image = document.createElement('img');
@@ -39,13 +40,13 @@ var App = function () {
         };
 
         document.getElementById('clockwise').onclick = function () {
-            self.angleInDegrees += 15;
+            self.angleInDegrees += 5;
             refreshImgPosition(1);
             refreshImg();
         };
 
         document.getElementById('counterclockwise').onclick = function () {
-            self.angleInDegrees -= 15;
+            self.angleInDegrees -= 5;
             refreshImgPosition(1);
             refreshImg();
         };
@@ -70,7 +71,7 @@ var App = function () {
             self.scaleMinusInterval = setInterval(scaleMinus, 50);
         };
 
-        self.$canvas.mousedown(function (e) {
+        self.$overlay.mousedown(function (e) {
             handleMouseDown(e);
         });
         self.$body.mousemove(function (e) {
@@ -81,7 +82,7 @@ var App = function () {
             clearInterval(self.scaleMinusInterval);
             clearInterval(self.scalePlusInterval);
         });
-        self.$canvas.mouseout(function (e) {
+        self.$overlay.mouseout(function (e) {
             handleMouseOut(e);
         });
     };
@@ -89,9 +90,11 @@ var App = function () {
         self.inputPhoto.click();
     };
     var getImg = function () {
+        refreshImg(true);
         self.img = document.createElement('img');
         self.img.src = self.canvas.toDataURL();
-        document.getElementById('imgContainer').appendChild(self.img);
+        document.body.appendChild(self.img);
+        refreshImg(false);
     };
     var flip = function () {
         if (self.flipX === -1) {
@@ -144,13 +147,20 @@ var App = function () {
             self.imageY = self.minTop;
         }
     };
-    var refreshImg = function () {
+    var refreshImg = function (getImg) {
         self.ctx.clearRect(0, 0, self.canvasWidth, self.canvasHeight);
         self.ctx.save();
         self.ctx.translate(self.imageX, self.imageY);
         self.ctx.scale(self.flipX, self.flipY);
         self.ctx.rotate(self.angleInDegrees * Math.PI / 180);
-        self.ctx.drawImage(self.image, -self.imageWidth / 2, -self.imageHeight / 2, self.imageWidth, self.imageHeight);
+        if(getImg){
+            var img = document.getElementById('ava-soccer');
+            self.ctx.drawImage(self.image, -self.imageWidth / 2, -self.imageHeight / 2, self.imageWidth, self.imageHeight);
+            self.ctx.restore();
+            self.ctx.drawImage(img, 0, 0, img.width, img.height);
+        } else {
+            self.ctx.drawImage(self.image, -self.imageWidth / 2, -self.imageHeight / 2, self.imageWidth, self.imageHeight);
+        }
         self.ctx.restore();
     };
     var handleImage = function (e) {
@@ -226,6 +236,12 @@ $(function () {
                 // The person is not logged into this app or we are unable to tell.
                 console.log(response);
             }
+        });
+    });
+    $('#fblogout').on('click', function () {
+        FB.logout(function(response) {
+            // Person is now logged out
+            console.log(response);
         });
     });
 });

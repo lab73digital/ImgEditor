@@ -35,30 +35,41 @@
 
         canvas {
             border: 1px solid red;
-            margin: 50px 50px 5px 50px;
         }
 
         .uploader {
             position: absolute;
-            top: 50px;
-            left: 50px;
+            top: 0;
+            left: 0;
             overflow: hidden;
-            width: 802px;
-            height: 802px;
+            width: 382px;
+            height: 382px;
             background: transparent;
             border: 1px dashed #e8e8e8;
         }
-
+        .overlay {
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+            background-image: url(ava-soccer.png);
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
         #imgContainer {
             position: relative;
+            display: inline-block;
+            margin: 50px 50px 5px 50px;
         }
 
         #filePhoto {
             position: absolute;
-            width: 802px;
-            height: 802px;
-            top: 50px;
-            left: 50px;
+            width: 382px;
+            height: 382px;
+            top: 0;
+            left: 0;
             z-index: 2;
             opacity: 0;
             cursor: pointer;
@@ -156,8 +167,11 @@
 <div id="status">
 </div>
 <button id="fblogin">fb login</button>
+<button id="fblogout">fb logout</button>
+<br>
 <div id="imgContainer">
-    <canvas id="canvas" width="800" height="800"></canvas>
+    <canvas id="canvas" width="380" height="380"></canvas>
+    <div class="overlay"></div>
     <div class="uploader" onclick="app.inputClick">
         <input type="file" name="userprofile_picture" id="filePhoto"/>
     </div>
@@ -174,6 +188,7 @@
     <br>
     <button id="getImg">getImg</button>
 </div>
+<img id="ava-soccer" src="ava-soccer.png" style="display: none;" alt="">
 <br>
 <script src="jquery-3.2.1.min.js"></script>
 <script src="common.js"></script>
