@@ -1,4 +1,4 @@
-var App = function () {
+var ImgEditor = function () {
     var self = {};
     this._init = function () {
         self.canvas = document.getElementById('canvas');
